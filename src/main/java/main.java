@@ -1,9 +1,11 @@
+// import library
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class main {
     public static void main(String[] args) {
+        // define variable
         int num;
         int case1Quantity = 0;
         int case2Quantity = 0;
@@ -11,13 +13,13 @@ public class main {
         int case4Quantity = 0;
         int case5Quantity = 0;
 
-        // Create Scanner object
+        // Create Scanner object for input user
         Scanner s = new Scanner(System.in);
 
+        // do looping with do-while
         do {
             // call main_menu
             main_menu();
-
             System.out.print("=> ");
             // Read the next integer from the screen
             num = s.nextInt();
@@ -32,7 +34,7 @@ public class main {
                     System.out.println("input 0 untuk kembali");
                     System.out.print("qty => ");
                     int qty = s.nextInt();
-                    if (qty != 0) {
+                    if (qty != 0) { // if equal to zero, program will go to mainmenu
                         case1Quantity += qty; // Accumulate the quantity for Nasi Goreng
                     }
                 }
@@ -93,8 +95,10 @@ public class main {
                             "\nKonfirmasi Pembayaran" +
                             "\n==============================\n"
                     );
-                    // iniii tambahkan sesuatu <=>
+
                     // Display the ordered items and quantities
+                    // there are checking conditional with "if"
+                    // if zero, don't show anythings
                     if (case1Quantity > 0) {
                         System.out.println("Nasi Goreng\t\t\t" + case1Quantity + "\t\t" + (15000 * case1Quantity));
                     }
@@ -111,8 +115,11 @@ public class main {
                         System.out.println("Es Jeruk\t\t\t" + case5Quantity + "\t\t" + (5000 * case5Quantity));
                     }
 
-                    int totalQty = calculateTotalQty(case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
-                    double totalBill = calculateTotalBill(case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
+                    // calculate totalQty and totalBill, call the method
+                    int totalQty = calculateTotalQty(
+                            case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
+                    double totalBill = calculateTotalBill(
+                            case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
                     if (totalBill > 0) {
                         System.out.println("------------------------------+");
                         System.out.println("Total\t\t\t\t" + totalQty + "\t\t" + totalBill + "\n");
@@ -124,12 +131,10 @@ public class main {
                     System.out.print("=> ");
                     int case99 = s.nextInt();
                     if (case99 == 1) {
-                        // Implement payment logic here
-                        // You can add payment processing code here
-                        // Implement payment logic here
                         System.out.println("Total Pembayaran: " + totalBill);
+
                         // Generate payment receipt as a .txt file
-                        generateReceipt(case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity, totalQty, totalBill);
+                        generateReceipt(case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
 
                         // Reset quantities after payment
                         case1Quantity = 0;
@@ -137,9 +142,7 @@ public class main {
                         case3Quantity = 0;
                         case4Quantity = 0;
                         case5Quantity = 0;
-
                     } else if (case99 == 2) {
-                        break;
                     } else if (case99 == 0) {
                         System.exit(0);
                     } else {
@@ -152,25 +155,29 @@ public class main {
     }
 
     public static void main_menu(){
-        System.out.println("====================" +
-                "\nSelamat datang di BinarFud" +
-                "\n====================" +
-                "\n\nSilahkan pilih makanan:" +
-                "\n1. Nasi Goreng\t|\t15.000" +
-                "\n2. Mie Goreng\t|\t13.000" +
-                "\n3. Nasi + Ayam\t|\t18.000" +
-                "\n4. Es Teh Manis\t|\t3.000" +
-                "\n5. Es Jeruk\t\t|\t5.000" +
-                "\n99. Pesan dan Bayar" +
-                "\n0. Keluar Aplikasi\n"
+        System.out.println("""
+                ====================
+                Selamat datang di BinarFud
+                ====================
+
+                Silahkan pilih makanan:
+                1. Nasi Goreng\t|\t15.000
+                2. Mie Goreng\t|\t13.000
+                3. Nasi + Ayam\t|\t18.000
+                4. Es Teh Manis\t|\t3.000
+                5. Es Jeruk\t\t|\t5.000
+                99. Pesan dan Bayar
+                0. Keluar Aplikasi
+                """
         );
     }
 
     public static int calculateTotalQty(int case1Quantity, int case2Quantity, int case3Quantity, int case4Quantity, int case5Quantity) {
-        int totalQty = 0;
+        int totalQty;
         totalQty = case1Quantity + case2Quantity + case3Quantity + case4Quantity + case5Quantity;
         return totalQty;
     }
+
     public static double calculateTotalBill(int case1Quantity, int case2Quantity, int case3Quantity, int case4Quantity, int case5Quantity) {
         double total = 0.0;
 
@@ -184,8 +191,7 @@ public class main {
 
         return total;
     }
-    public static void generateReceipt(int case1Quantity, int case2Quantity, int case3Quantity, int case4Quantity, int case5Quantity,
-                                       int totalQty, double totalBill) {
+    public static void generateReceipt(int case1Quantity, int case2Quantity, int case3Quantity, int case4Quantity, int case5Quantity) {
         try {
             FileWriter writer = new FileWriter("payment_receipt.txt");
 
@@ -211,8 +217,8 @@ public class main {
                 writer.write("Es Jeruk\t\t\t" + case5Quantity + "\t\t" + (5000 * case5Quantity) + "\n");
             }
 
-            totalQty = calculateTotalQty(case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
-            totalBill = calculateTotalBill(case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
+            int totalQty = calculateTotalQty(case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
+            double totalBill = calculateTotalBill(case1Quantity, case2Quantity, case3Quantity, case4Quantity, case5Quantity);
             if (totalBill > 0) {
                 writer.write("------------------------------+\n");
                 writer.write("Total\t\t\t\t" + totalQty + "\t\t" + totalBill + "\n\n");
